@@ -1,0 +1,23 @@
+.pointee_wrapper {clear: both; display: block; padding: 10px; float: left;}
+.pointee_wrapper div.inset {position: relative; float: left; }
+.pointee_wrapper .pointee_map_marker {width: 20px; height: 27px;  border-radius: 5px; background: red; position: absolute; top: 0; left: 0; background: url(../gfx/marker.png) no-repeat 0 0;}
+.pointee_wrapper .pointee_get_started {padding: 0; margin: 0;}
+.pointee_wrapper p.pointee_get_started {padding: 10px; font-size: 12px; background: #fff; }
+.pointee_wrapper img.pointee_image:hover {cursor: crosshair;}
+.pointee_wrapper img.pointee_image {box-shadow: 0 0 10px #D1D5DE;}
+
+.pointee_wrapper .pointee_black {background-position: 0 0;}
+.pointee_wrapper .pointee_blue {background-position:  0 -27px;}
+.pointee_wrapper .pointee_pink {background-position:  0 -54px;}
+.pointee_wrapper .pointee_yellow {background-position:  0 -81px;}
+
+.pointee_fields {clear: left;}
+.pointee_fields .pointee_var {background: #fff; padding: 5px 10px; float: left; margin: 10px; line-height: 16px; border: 1px solid #D1D5DE; }
+.pointee_fields .pointee_var input,
+.pointee_fields .pointee_var input:focus {margin: 0; border: none; padding: 6px 5px;}
+.pointee_fields .pointee_var span {font-size: 16px; font-weight: bold; display: block; float: left; width: 20px; text-align: center; margin: 5px 0}
+
+.pointee_file_chooser {clear: left; margin-left: 10px; float: left;}
+
+.pointee_quiet {opacity: 0.5;}
+.pointee_quiet:hover {opacity: 1;}
