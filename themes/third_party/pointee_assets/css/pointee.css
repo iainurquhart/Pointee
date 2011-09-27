@@ -18,6 +18,7 @@
 .pointee_fields .pointee_var span {font-size: 16px; font-weight: bold; display: block; float: left; width: 20px; text-align: center; margin: 5px 0}
 
 .pointee_file_chooser {clear: left; margin-left: 10px; float: left;}
+.pointee_file_chooser button:hover {cursor: pointer;}
 
 .pointee_quiet {opacity: 0.5;}
 .pointee_quiet:hover {opacity: 1;}
