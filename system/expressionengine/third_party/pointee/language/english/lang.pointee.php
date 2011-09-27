@@ -7,6 +7,8 @@ $lang = array(
 "blue" 		=> 'Blue',
 "pink" 		=> 'Pink',
 "yellow" 	=> 'Yellow',
+"upload_select_prompt" 		=> 'Please select an image to log co-ordinates.',
+"select_file" 		=> 'Browse / Upload Image',
 //
 ''=>''
 

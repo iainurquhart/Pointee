@@ -31,7 +31,7 @@ class Pointee_ft extends EE_Fieldtype {
 	 */
 	function display_field($data)
 	{
-
+		$this->EE->lang->loadfile('pointee');
 		if(is_array($data)) $data = implode('|', $data);
 
 		$data = ($data != '') ? explode('|', $data) : array();
@@ -59,14 +59,26 @@ class Pointee_ft extends EE_Fieldtype {
 	
 	// --------------------------------------------------------------------
 	
-	// we're not saving anything
+	// --------------------------------------------------------------------
+		
+	/**
+	 * Save
+	 *
+	 * @access	public
+	 * @param	field data
+	 * @return	pipe delimited string of values
+	 *
+	 */
 	function save($data)
 	{
 		$image 	= (isset($data['img'])) ? $data['img'] : '';
 		$xc 	= (isset($data['xc'])) ? $data['xc'] : 0;
 		$yc 	= (isset($data['yc'])) ? $data['yc'] : 0;
 		
-		return 'img:'.$image.'|x:'.$xc.'|y:'.$yc;
+		if($image)
+		{
+			return 'img:'.$image.'|x:'.$xc.'|y:'.$yc;
+		}
 	}
 	
 	// --------------------------------------------------------------------
@@ -83,8 +95,7 @@ class Pointee_ft extends EE_Fieldtype {
 	{
 		return $data;
 	}
-	
-	
+
 	// --------------------------------------------------------------------
 
 
@@ -99,16 +110,20 @@ class Pointee_ft extends EE_Fieldtype {
 	function replace_img($data, $params = array(), $tagdata = FALSE)
 	{
 		
-		list($img, $xc, $yc) = explode('|', $data);
+		$data = explode('|', $data);
 		
-		$img =  str_replace('img:', '', $img);
-		$img = ($img != '[fixed]') ? $img : $this->settings['fixed_img_url'];
-		
-		if($img != '')
+		if(count($data))
 		{
-			$this->EE->load->library('typography');
-			$this->EE->typography->parse_images = TRUE;
-			return $this->EE->typography->parse_file_paths($img);
+			$img = (isset($data[0])) ? $data[0] : '';
+			$img =  str_replace('img:', '', $img);
+			$img = ($img != '[fixed]') ? $img : $this->settings['fixed_img_url'];
+			
+			if($img != '')
+			{
+				$this->EE->load->library('typography');
+				$this->EE->typography->parse_images = TRUE;
+				return $this->EE->typography->parse_file_paths($img);
+			}
 		}
 		
 	}
@@ -127,13 +142,15 @@ class Pointee_ft extends EE_Fieldtype {
 	 */
 	function replace_x($data, $params = array(), $tagdata = FALSE)
 	{
-
-		$offset = (isset($params['offset'])) ? (int) $params['offset'] : 0;
-	
-		list($image_url, $xc, $yc) = explode('|', $data);
-		$xc =  str_replace('x:', '', $xc);
-		return ($xc + $offset);
+		$data = explode('|', $data);
 		
+		if(count($data))
+		{
+			$offset = (isset($params['offset'])) ? (int) $params['offset'] : 0;
+			$xc = (isset($data[1])) ? $data[1] : '';
+			$xc =  str_replace('x:', '', $xc);
+			return ($xc + $offset);
+		}
 	}
 	
 	// --------------------------------------------------------------------
@@ -149,10 +166,16 @@ class Pointee_ft extends EE_Fieldtype {
 	 */
 	function replace_y($data, $params = array(), $tagdata = FALSE)
 	{
-		$offset = (isset($params['offset'])) ? (int) $params['offset'] : 0;
-		list($image_url, $xc, $yc) = explode('|', $data);
-		$yc =  str_replace('y:', '', $yc);
-		return ($yc + $offset);
+	
+		$data = explode('|', $data);
+		
+		if(count($data))
+		{
+			$offset = (isset($params['offset'])) ? (int) $params['offset'] : 0;
+			$yc = (isset($data[2])) ? $data[2] : '';
+			$yc =  str_replace('y:', '', $yc);
+			return ($yc + $offset);
+		}
 		
 	}
 

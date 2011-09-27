@@ -9,7 +9,7 @@
 			<img src="<?=$display_image?>" class="pointee_image" />
 			<div class="pointee_map_marker pointee_<?=$color?>"></div>
 		<? else: ?>
-			<p class="pointee_get_started">Please upload/select an image to log co-ordinates.</p>
+			<p class="pointee_get_started"><?=lang('upload_select_prompt')?></p>
 		<? endif ?>
 	</div>
 </div>
@@ -106,6 +106,6 @@ $(document).ready(function(){
 </div>
 <? if($fixed_img_url  == ''):?>
 <div class="pointee_file_chooser<?=($image !='') ? ' pointee_quiet' : ''?>">
-<button id="<?=$field_name?>_trigger" class="submit">Select&nbsp;a&nbsp;file</button>
+<button id="<?=$field_name?>_trigger" class="submit"><?=lang('select_file')?></button>
 </div>
 <? endif ?>
