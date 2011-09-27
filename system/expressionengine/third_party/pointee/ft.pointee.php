@@ -1,14 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * 'Plates Fieldtype for ExpressionEngine 2
+ * Pointee Fieldtype for ExpressionEngine 2
  *
  * @package		ExpressionEngine
  * @subpackage	Fieldtypes
  * @category	Fieldtypes
  * @author    	Iain Urquhart <shout@iain.co.nz>
  * @copyright 	Copyright (c) 2011 Iain Urquhart
- * @license   	Commercial, All Rights Reserved: http://devot-ee.com/add-ons/license/plates/
+ * @license   	Creative Commons Attribution No Derivatives -> http://creativecommons.org/licenses/by-nd/3.0/
 */
 
 
@@ -258,4 +258,4 @@ class Pointee_ft extends EE_Fieldtype {
 }
 
 /* End of file ft.plates.php */
-/* Location: ./system/expressionengine/third_party/plates/ft.plates.php */
+/* Location: ./system/expressionengine/third_party/pointee/ft.pointee.php */
