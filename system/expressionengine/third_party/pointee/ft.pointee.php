@@ -45,12 +45,13 @@ class Pointee_ft extends EE_Fieldtype {
 		$vars['yc'] 		= ( isset($data[2]) ) ? str_replace('y:', '', $data[2]) : 0;
 		$vars['offset_x'] 	= 9;
 		$vars['offset_y'] 	= 27;
-
+		$vars['display_image'] = '';
+		
 		if($vars['image'] != '')
 		{
 			$this->EE->load->library('typography');
 			$this->EE->typography->parse_images = TRUE;
-			$vars['image'] = $this->EE->typography->parse_file_paths($vars['image']);
+			$vars['display_image'] = $this->EE->typography->parse_file_paths($vars['image']);
 		}
 		
 		return $this->EE->load->view('field', $vars, TRUE);

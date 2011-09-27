@@ -5,8 +5,8 @@
 		<? if($fixed_img_url != ''):?>
 			<img src="<?=$fixed_img_url?>" class="pointee_image" />
 			<div class="pointee_map_marker pointee_<?=$color?>"></div>
-		<? elseif($image !=''): ?>
-			<img src="<?=$image?>" class="pointee_image" />
+		<? elseif($display_image !=''): ?>
+			<img src="<?=$display_image?>" class="pointee_image" />
 			<div class="pointee_map_marker pointee_<?=$color?>"></div>
 		<? else: ?>
 			<p class="pointee_get_started">Please upload/select an image to log co-ordinates.</p>
