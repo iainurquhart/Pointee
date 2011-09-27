@@ -10,14 +10,14 @@ The image can be predefined per field, or set per entry.
 
 If your pointee field has the shortname of *my_field*, you can access the various attributes using the following tags/methods:
 
-	{pointee:img} 	/ returns the image url
-	{pointee:x} 	/ returns the x coordinate
-	{pointee:y} 	/ returns the y coordinate
+	{my_field:img} 	/ returns the image url
+	{my_field:x} 	/ returns the x coordinate
+	{my_field:y} 	/ returns the y coordinate
 
 You can offset the x/y coordinates using an offset parameter, for example:
 
-	{pointee:x offset="+8"}
-	{pointee:y offset="-22"}
+	{my_field:x offset="+8"}
+	{my_field:y offset="-22"}
 
 ### Support and Feature Requests
 Please post on the @devot_ee forums:
