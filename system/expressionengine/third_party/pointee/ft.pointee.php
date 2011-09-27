@@ -32,6 +32,13 @@ class Pointee_ft extends EE_Fieldtype {
 	function display_field($data)
 	{
 		$this->EE->lang->loadfile('pointee');
+		
+		if (! isset($this->EE->session->cache['taxonomy']['css_added']) )
+		{
+			$this->EE->session->cache['taxonomy']['css_added'] = 1;
+			$this->EE->cp->add_to_head('<link rel="stylesheet" type="text/css" href="'.$this->EE->config->item('theme_folder_url').'third_party/pointee_assets/css/pointee.css'.'" />');
+		}
+		
 		if(is_array($data)) $data = implode('|', $data);
 
 		$data = ($data != '') ? explode('|', $data) : array();
@@ -56,9 +63,7 @@ class Pointee_ft extends EE_Fieldtype {
 		
 		return $this->EE->load->view('field', $vars, TRUE);
 	}
-	
-	// --------------------------------------------------------------------
-	
+		
 	// --------------------------------------------------------------------
 		
 	/**
@@ -87,7 +92,7 @@ class Pointee_ft extends EE_Fieldtype {
 	 * Replace tag
 	 *
 	 * @access	public
-	 * @param	field contents
+	 * @param	field contents, parameters
 	 * @return	replacement text
 	 *
 	 */
@@ -103,7 +108,7 @@ class Pointee_ft extends EE_Fieldtype {
 	 * Replace :image
 	 *
 	 * @access	public
-	 * @param	field contents
+	 * @param	field contents, parameters
 	 * @return	replacement text
 	 *
 	 */
@@ -136,7 +141,7 @@ class Pointee_ft extends EE_Fieldtype {
 	 * Replace :x
 	 *
 	 * @access	public
-	 * @param	field contents
+	 * @param	field contents, parameters
 	 * @return	replacement text
 	 *
 	 */
@@ -193,6 +198,7 @@ class Pointee_ft extends EE_Fieldtype {
 	function display_settings($data)
 	{
 		$this->EE->lang->loadfile('pointee');
+		
 		$vars = array();
 		$data['fixed_img_url'] 	= ( isset($data['fixed_img_url']) ) ? $data['fixed_img_url'] : '';
 		$data['color'] 		= ( isset($data['color']) ) ? $data['color'] : '';
@@ -202,10 +208,13 @@ class Pointee_ft extends EE_Fieldtype {
 						 'pink'  	=> lang('pink'), 
 						 'yellow' 	=> lang('yellow') );
 		
+		// text input for image per field
 		$this->EE->table->add_row(
 			lang('image_select_instructions').':',
 			form_input("pointee_options[fixed_img_url]", $data['fixed_img_url'])
 		);
+		
+		// colors
 		$this->EE->table->add_row(
 			lang('marker_color').':',
 			form_dropdown("pointee_options[color]", $colors, $data['color'])
