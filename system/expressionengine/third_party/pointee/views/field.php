@@ -41,8 +41,12 @@
 	
 		$("#<?=$field_name?>_pointee_img img.pointee_image").live('click', function(eventObj ) {
 			
-			var $x = eventObj.layerX +1;
-			var $y = eventObj.layerY +1;
+			// console.log(eventObj)
+			
+			var elOffsetX = $(this).offset().left,
+	        elOffsetY = $(this).offset().top,
+	        $x = Math.round( eventObj.pageX - elOffsetX ),
+	        $y = Math.round( eventObj.pageY - elOffsetY );
 			
 			// console.log(eventObj);
 			

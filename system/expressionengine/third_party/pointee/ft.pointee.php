@@ -16,7 +16,7 @@ class Pointee_ft extends EE_Fieldtype {
 	
 	var $info = array(
 		'name'		=> 'Pointee',
-		'version'	=> '2.0'
+		'version'	=> '2.1'
 	);
 
 	// --------------------------------------------------------------------
