@@ -1,4 +1,4 @@
-# Pointee Gieldtype for ExpressionEngine 2.0
+# Pointee Fieldtype for ExpressionEngine 2.0
 
 ### Overview
 
