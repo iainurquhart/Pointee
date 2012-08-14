@@ -19,6 +19,9 @@ class Pointee_ft extends EE_Fieldtype {
 		'version'	=> '2.1'
 	);
 
+	 // Set by Low Variables
+	var $var_id;
+
 	// --------------------------------------------------------------------
 	
 	/**
@@ -45,8 +48,8 @@ class Pointee_ft extends EE_Fieldtype {
 		$vars = array();
 		$vars['fixed_img_url'] 	= ( isset($this->settings['fixed_img_url']) ) ? $this->settings['fixed_img_url'] : '';
 		$vars['color'] 		= ( isset($this->settings['color']) ) ? $this->settings['color'] : 'black';
-		$vars['field_id'] 	= $this->field_id;
-		$vars['field_name'] = $this->field_name;
+		$vars['field_id'] 	= ($this->var_id) ? $this->var_id : $this->field_id;
+		$vars['field_name'] = str_replace(array('[',']'), array('_',''), $this->field_name);
 		$vars['image'] 		= ( isset($data[0]) ) ? str_replace('img:', '', $data[0]) : '';
 		$vars['xc'] 		= ( isset($data[1]) ) ? str_replace('x:', '', $data[1]) : 0;
 		$vars['yc'] 		= ( isset($data[2]) ) ? str_replace('y:', '', $data[2]) : 0;
@@ -65,7 +68,36 @@ class Pointee_ft extends EE_Fieldtype {
 	}
 		
 	// --------------------------------------------------------------------
-		
+
+
+	/**
+	 * Display Variable Field
+	 * @param string $data
+	 * @return string
+	 */
+	function display_var_field($data)
+	{
+		if (! $this->var_id) return;
+
+		// since we are "within" Low Variables, we need to add our package path
+		$this->EE->load->add_package_path(PATH_THIRD . 'pointee');
+
+		$display = $this->display_field($data);
+
+		// now remove our package path
+		$this->EE->load->remove_package_path(PATH_THIRD . 'pointee');
+
+		// also let's be sure EE's filemanager is loaded
+		$this->EE->load->library(array('filemanager', 'file_field')); 
+		$this->EE->file_field->browser(); 
+
+		// here you go, @low
+		return $display;
+	}
+
+	// --------------------------------------------------------------------
+
+
 	/**
 	 * Save
 	 *
@@ -88,6 +120,20 @@ class Pointee_ft extends EE_Fieldtype {
 	
 	// --------------------------------------------------------------------
 		
+	/**
+	 * Save Variable Field
+	 * @param array $data
+	 * @return string Keywords
+	 */
+	function save_var_field($data)
+	{
+		if (! $this->var_id) return;
+
+		return $this->save($this->EE->input->post('var_' . $this->var_id));
+	}
+
+	// --------------------------------------------------------------------
+
 	/**
 	 * Replace tag
 	 *
@@ -187,15 +233,44 @@ class Pointee_ft extends EE_Fieldtype {
 	
 	// --------------------------------------------------------------------
 
+
+	/**
+	 * Display Variable Tag
+	 */
+	function display_var_tag($data, $params = array(), $tagdata = FALSE)
+	{
+		if (! $this->var_id) return;
+
+		if( ! $tagdata)
+		{
+			return $this->replace_tag($data, $params, $tagdata);
+		}
+		else
+		{
+			// possible tag variables to replace
+			$variables = array();
+
+			$variables[] = array(
+				$params['var'] => $this->replace_tag($data, $params),
+				$params['var'].':img' => $this->replace_img($data, $params),
+				$params['var'].':x' => $this->replace_x($data, $params),
+				$params['var'].':y' => $this->replace_y($data, $params)
+			);
+
+			return $this->EE->TMPL->parse_variables($tagdata, $variables);
+		}
+	}
+	
+	// --------------------------------------------------------------------
 	
 	/**
-	 * Display Settings Screen
+	 * Build & return array of Settings
 	 *
 	 * @access	public
-	 * @return	default global settings
+	 * @return	Array default global settings
 	 *
 	 */
-	function display_settings($data)
+	function _settings($data)
 	{
 		$this->EE->lang->loadfile('pointee');
 		
@@ -207,22 +282,68 @@ class Pointee_ft extends EE_Fieldtype {
 						 'blue'  	=> lang('blue'), 
 						 'pink'  	=> lang('pink'), 
 						 'yellow' 	=> lang('yellow') );
+
+		// build array for table rows
+		$rows = array();
 		
 		// text input for image per field
-		$this->EE->table->add_row(
+		$rows[] = array(
 			lang('image_select_instructions').':',
 			form_input("pointee_options[fixed_img_url]", $data['fixed_img_url'])
 		);
 		
 		// colors
-		$this->EE->table->add_row(
+		$rows[] = array(
 			lang('marker_color').':',
 			form_dropdown("pointee_options[color]", $colors, $data['color'])
 		);
+
+		return $rows;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Display Settings Screen
+	 *
+	 * @access	public
+	 * @return	default global settings
+	 *
+	 */
+	function display_settings($data)
+	{
+		$rows = $this->_settings($data);
+
+		foreach($rows as $row)
+		{
+			// text input for image per field
+			$this->EE->table->add_row(
+				$row[0],
+				$row[1]
+			);
+		}
 	}
 	
 	// --------------------------------------------------------------------
 
+	/**
+	 * Display Variable Settings
+	 * @param array $data
+	 */
+	function display_var_settings($data)
+	{
+		if (!defined('LOW_VAR_VERSION') || version_compare(LOW_VAR_VERSION, '2.2', '<'))
+		{
+			return array(
+				array('', 'Pointee requires Low Variables 2.2 or later.')
+			);
+		}
+
+		return $this->_settings($data);
+	}
+
+	// --------------------------------------------------------------------
+		
 	/**
 	 * Save Settings
 	 *
@@ -238,6 +359,30 @@ class Pointee_ft extends EE_Fieldtype {
 			'fixed_img_url' => $options['fixed_img_url'],
 			'color' => $options['color']
 		);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Save Low Variable Settings
+	 *
+	 * @access	public
+	 * @return	field settings
+	 *
+	 */
+	function save_var_settings()
+	{
+		return $this->save_settings();
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Post-Save Field Settings
+	 */
+	function post_save_settings()
+	{
+		return $this->save_settings();
 	}
 
 	// --------------------------------------------------------------------
