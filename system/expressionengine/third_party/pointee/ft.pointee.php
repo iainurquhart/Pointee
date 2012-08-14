@@ -230,7 +230,7 @@ class Pointee_ft extends EE_Fieldtype {
 	 * @return	field settings
 	 *
 	 */
-	function save_settings($data)
+	function save_settings()
 	{
 		$options = $this->EE->input->post('pointee_options');
 				
