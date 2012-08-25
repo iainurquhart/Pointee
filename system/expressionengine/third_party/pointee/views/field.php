@@ -41,8 +41,6 @@
 	
 		$("#<?=$field_name?>_pointee_img img.pointee_image").live('click', function(eventObj ) {
 			
-			// console.log(eventObj)
-			
 			var elOffsetX = $(this).offset().left,
 	        elOffsetY = $(this).offset().top,
 	        $x = Math.round( eventObj.pageX - elOffsetX ),
@@ -59,7 +57,24 @@
 					left: ($x - $marker_offset_x) + 'px', top: ($y - $marker_offset_y) + 'px'
 				});
 			}
-	
+			
+			// begin matrix add row
+			// @todo add a preference here to choose which matrix
+			// rather than assume first matrix is the one we want
+			var row = Matrix.instances[0].addRow();
+
+			var id = row.id;
+
+			// hard coded field_id for now
+			var x_input = "[name^='field_id_17["+id+"][col_id_1]']";
+			var y_input = "[name^='field_id_17["+id+"][col_id_2]']";
+
+			// add our x/y values
+			$(x_input).val( $x );
+			$(y_input).val( $y );
+			
+			// end matrix add row
+
 		});
 	
 	});
